@@ -8,14 +8,12 @@ import {
   IconButton,
   Paper,
   InputBase,
-  Card,
-  CardContent,
-  Typography,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
 import { queryDiscovery } from "../utils/index";
 import { MockSearchResult } from "../mock/MockSearchResult";
+import SearchResultCard from "../components/SearchResultCard/SearchResultCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,16 +42,8 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     // TODO: レスポンシブ対応？？
-    // margin: "0 auto",
-    width: "600px"
+    width: "800px"
   },
-  card: {
-    margin: "20px auto",
-  },
-  filename: {
-    borderTop: "1px solid grey",
-    marginTop: "5px"
-  }
 }));
 
 const Top = () => {
@@ -98,20 +88,11 @@ const Top = () => {
       </form>
       <Grid className={classes.grid}>
         <Container className={classes.container}>
-          {/* TODO: コンポーネント化 */}
-          {MockSearchResult.result.map((data, index) => (<Grid key={index}>
-            <Card className={classes.card}>
-              <CardContent>
-                <Typography variant="body1" component="p">
-                  {data.passage}
-                </Typography>
-                <Typography className={classes.filename} variant="body2" color="textSecondary" align="left">
-                  {data.filename}
-                </Typography>
-              </CardContent>
-
-            </Card>
-          </Grid>)
+          {/* TODO: APIとの連携 */}
+          {MockSearchResult.result.map((data, index) => (
+            <Grid key={`SearchResultCard-${data.filename}-${index}`}>
+              <SearchResultCard filename={data.filename} passage={data.passage}/>
+            </Grid>)
           )}
         </Container>
       </Grid>
