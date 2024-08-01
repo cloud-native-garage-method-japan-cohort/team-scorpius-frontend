@@ -93,7 +93,7 @@ spec:
       schedulerName: default-scheduler
       containers:
       - name: team-scorpius-fe
-        image: team-scorpius-fe
+        image: quay.io/ryuto-nakano/team-scorpius-fe
         ports:
         - name: http
           protocol: TCP
