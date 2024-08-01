@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     width: "100",
   },
   container: {
-    // TODO: レスポンシブ対応？？
+    // TODO: レスポンシブ対応？？？
     width: "800px"
   },
 }));
