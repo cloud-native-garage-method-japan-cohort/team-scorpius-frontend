@@ -89,7 +89,7 @@ const Top = () => {
       <Grid className={classes.grid}>
         <Container className={classes.container}>
           {/* TODO: APIとの連携 */}
-          {MockSearchResult.result.map((data, index) => (
+          {MockSearchResult.map((data, index) => (
             <Grid key={`SearchResultCard-${data.filename}-${index}`}>
               <SearchResultCard filename={data.filename} passage={data.passage}/>
             </Grid>)
