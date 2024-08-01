@@ -8,6 +8,7 @@ import {
   IconButton,
   Paper,
   InputBase,
+  Typography,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
@@ -47,14 +48,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Top = () => {
   const [sendText, setSendText] = useState("");
-  const [recvText, setRecvText] = useState([]);
+  const [recvArticles, setRecvArticles] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const classes = useStyles();
 
   const onPressQuery = async (event) => {
     event.preventDefault();
     const res = await queryDiscovery(sendText);
-    setRecvText(res.data);
+    setRecvArticles(res.data);
+    setHasSearched(true);
   };
 
   return (
@@ -85,10 +88,16 @@ const Top = () => {
       </form>
       <Grid className={classes.grid}>
         <Container className={classes.container}>
-          {recvText.length > 0 && recvText.map((data, index) => (
-            <Grid key={`SearchResultCard-${data.filename}-${index}`}>
-              <SearchResultCard filename={data.filename} passage={data.passage} />
-            </Grid>)
+          {recvArticles.length > 0 ? (
+            recvArticles.map((data, index) => (
+              <Grid item key={`SearchResultCard-${data.filename}-${index}`}>
+                <SearchResultCard filename={data.filename} passage={data.passage} />
+              </Grid>
+            ))
+          ) : hasSearched && (
+            <Grid item>
+              <Typography variant="body1">該当の資料が見つかりませんでした。</Typography>
+            </Grid>
           )}
         </Container>
       </Grid>
