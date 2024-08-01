@@ -97,7 +97,7 @@ spec:
         ports:
         - name: http
           protocol: TCP
-          containerPort: 5173
+          containerPort: 8080
         env:
         - name: INGRESS_HOST
         - name: PROTOCOLS
@@ -107,7 +107,7 @@ spec:
         livenessProbe:
           failureThreshold: 3
           httpGet:
-            port: 5173
+            port: 8080
             path: /
             scheme: HTTP
           periodSeconds: 10
