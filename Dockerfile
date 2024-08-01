@@ -1,4 +1,5 @@
-FROM node:20.15.1 as build
+# FROM node:20.15.1 as build
+FROM quay.io/jeffdean/node-alpine as build
 WORKDIR /app
 COPY . .
 RUN npm install
