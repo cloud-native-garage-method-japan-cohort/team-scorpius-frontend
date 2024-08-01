@@ -1,72 +1,134 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   annotations:
+#     #app.openshift.io/vcs-ref: f7580aa1eb6f7176705176e201ecff4de93edafb
+#     #app.openshift.io/vcs-uri: https://github.com/cloud-native-garage-method-japan-cohort/yukihiro-azuma-express-sample-app.git
+#   labels:
+#     app: pisces-search-app-web
+#     app.kubernetes.io/instance: pisces-search-app-web
+#     app.kubernetes.io/name: pisces-search-app-web
+#     app.openshift.io/runtime: js
+#   name: pisces-search-app-web
+# spec:
+#   progressDeadlineSeconds: 600
+#   replicas: 1
+#   revisionHistoryLimit: 10
+#   selector:
+#     matchLabels:
+#       app.kubernetes.io/instance: pisces-search-app-web
+#       app.kubernetes.io/name: pisces-search-app-web
+#   template:
+#     metadata:
+#       creationTimestamp: null
+#       labels:
+#         app.kubernetes.io/instance: pisces-search-app-web
+#         app.kubernetes.io/name: pisces-search-app-web
+#     spec:
+#       containers:
+#         - env:
+#           - name: INGRESS_HOST
+#           - name: PROTOCOLS
+#           - name: LOG_LEVEL
+#             value: debug
+#           image: quay.io/yukihiro_azuma1_ibm/pisces-search-app-web
+#           # image: quay.io/ryuto-nakano/team-scorpius-fe
+#           imagePullPolicy: IfNotPresent
+#           livenessProbe:
+#             failureThreshold: 3
+#             httpGet:
+#               path: /
+#               port: 3000
+#               scheme: HTTP
+#             periodSeconds: 10
+#             successThreshold: 1
+#             timeoutSeconds: 1
+#           name: pisces-search-app-web
+#           ports:
+#             - containerPort: 8080
+#               name: http
+#               protocol: TCP
+#           readinessProbe:
+#             failureThreshold: 3
+#             httpGet:
+#               path: /
+#               port: http
+#               scheme: HTTP
+#             periodSeconds: 10
+#             successThreshold: 1
+#             timeoutSeconds: 1
+#           resources: {}
+#           terminationMessagePath: /dev/termination-log
+#           terminationMessagePolicy: File
+#       # imagePullSecrets: 
+#       # - name: hyu-okumura-pull-secret
+#       # securityContext:
+#       #   runAsUser: 1000830001
+#       #   runAsGroup: 1000830001
+#       dnsPolicy: ClusterFirst
+#       restartPolicy: Always
+#       schedulerName: default-scheduler
+#       securityContext: {}
+#       terminationGracePeriodSeconds: 30
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    #app.openshift.io/vcs-ref: f7580aa1eb6f7176705176e201ecff4de93edafb
-    #app.openshift.io/vcs-uri: https://github.com/cloud-native-garage-method-japan-cohort/yukihiro-azuma-express-sample-app.git
-  labels:
-    app: pisces-search-app-web
-    app.kubernetes.io/instance: pisces-search-app-web
-    app.kubernetes.io/name: pisces-search-app-web
-    app.openshift.io/runtime: js
-  name: pisces-search-app-web
+  name: team-scorpius-fe
 spec:
-  progressDeadlineSeconds: 600
   replicas: 1
-  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app.kubernetes.io/instance: pisces-search-app-web
-      app.kubernetes.io/name: pisces-search-app-web
+      app.kubernetes.io/instance: app-instance
+      app.kubernetes.io/name: app
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app.kubernetes.io/instance: pisces-search-app-web
-        app.kubernetes.io/name: pisces-search-app-web
+        app.kubernetes.io/instance: app-instance
+        app.kubernetes.io/name: app
     spec:
-      containers:
-        - env:
-          - name: INGRESS_HOST
-          - name: PROTOCOLS
-          - name: LOG_LEVEL
-            value: debug
-          # image: quay.io/yukihiro_azuma1_ibm/pisces-search-app-web
-          image: quay.io/ryuto-nakano/team-scorpius-fe
-          imagePullPolicy: IfNotPresent
-          livenessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /
-              port: 3000
-              scheme: HTTP
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          name: pisces-search-app-web
-          ports:
-            - containerPort: 8080
-              name: http
-              protocol: TCP
-          readinessProbe:
-            failureThreshold: 3
-            httpGet:
-              path: /
-              port: http
-              scheme: HTTP
-            periodSeconds: 10
-            successThreshold: 1
-            timeoutSeconds: 1
-          resources: {}
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
-      imagePullSecrets: 
-      - name: hyu-okumura-pull-secret
-      securityContext:
-        runAsUser: 1000830001
-        runAsGroup: 1000830001
-      dnsPolicy: ClusterFirst
       restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
       terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+      containers:
+      - name: team-scorpius-fe
+        image: team-scorpius-fe
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: 5173
+        env:
+        - name: INGRESS_HOST
+        - name: PROTOCOLS
+        - name: LOG_LEVEL
+          value: debug
+        resources: {}
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            port: 5173
+            path: /
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            port: http
+            path: /
+            scheme: HTTP
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets: 
+      - name: ryuto-nakano-pull-secret
+      securityContext:
+        runAsUser: 1000790001
+        runAsGroup: 1000790001
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600

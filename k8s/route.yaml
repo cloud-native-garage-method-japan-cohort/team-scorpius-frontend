@@ -10,6 +10,6 @@ spec:
     termination: edge
   to:
      kind: Service
-     name: pisces-search-app-web
+     name: team-scorpius-fe
      weight: 100
   wildcardPolicy: None
