@@ -12,7 +12,6 @@ import {
 import SearchIcon from "@material-ui/icons/Search";
 
 import { queryDiscovery } from "../utils/index";
-import { MockSearchResult } from "../mock/MockSearchResult";
 import SearchResultCard from "../components/SearchResultCard/SearchResultCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,16 +47,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Top = () => {
   const [sendText, setSendText] = useState("");
-  const [recvText, setRecvText] = useState("");
+  const [recvText, setRecvText] = useState([]);
 
   const classes = useStyles();
 
   const onPressQuery = async (event) => {
     event.preventDefault();
     const res = await queryDiscovery(sendText);
-    setRecvText(res.data.responseText);
-    console.log(res);
-    // setSendText('');
+    setRecvText(res.data);
   };
 
   return (
@@ -88,10 +85,9 @@ const Top = () => {
       </form>
       <Grid className={classes.grid}>
         <Container className={classes.container}>
-          {/* TODO: APIとの連携 */}
-          {MockSearchResult.map((data, index) => (
+          {recvText.length > 0 && recvText.map((data, index) => (
             <Grid key={`SearchResultCard-${data.filename}-${index}`}>
-              <SearchResultCard filename={data.filename} passage={data.passage}/>
+              <SearchResultCard filename={data.filename} passage={data.passage} />
             </Grid>)
           )}
         </Container>
