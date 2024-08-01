@@ -8,11 +8,11 @@ import {
   IconButton,
   Paper,
   InputBase,
+  Typography,
 } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
 
 import { queryDiscovery } from "../utils/index";
-import { MockSearchResult } from "../mock/MockSearchResult";
 import SearchResultCard from "../components/SearchResultCard/SearchResultCard";
 
 const useStyles = makeStyles((theme) => ({
@@ -48,16 +48,16 @@ const useStyles = makeStyles((theme) => ({
 
 const Top = () => {
   const [sendText, setSendText] = useState("");
-  const [recvText, setRecvText] = useState("");
+  const [recvArticles, setRecvArticles] = useState([]);
+  const [hasSearched, setHasSearched] = useState(false);
 
   const classes = useStyles();
 
   const onPressQuery = async (event) => {
     event.preventDefault();
     const res = await queryDiscovery(sendText);
-    setRecvText(res.data.responseText);
-    console.log(res);
-    // setSendText('');
+    setRecvArticles(res.data);
+    setHasSearched(true);
   };
 
   return (
@@ -88,11 +88,16 @@ const Top = () => {
       </form>
       <Grid className={classes.grid}>
         <Container className={classes.container}>
-          {/* TODO: APIとの連携 */}
-          {MockSearchResult.map((data, index) => (
-            <Grid key={`SearchResultCard-${data.filename}-${index}`}>
-              <SearchResultCard filename={data.filename} passage={data.passage}/>
-            </Grid>)
+          {recvArticles.length > 0 ? (
+            recvArticles.map((data, index) => (
+              <Grid item key={`SearchResultCard-${data.filename}-${index}`}>
+                <SearchResultCard filename={data.filename} passage={data.passage} />
+              </Grid>
+            ))
+          ) : hasSearched && (
+            <Grid item>
+              <Typography variant="body1">該当の資料が見つかりませんでした。</Typography>
+            </Grid>
           )}
         </Container>
       </Grid>
