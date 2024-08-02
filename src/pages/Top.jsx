@@ -70,8 +70,8 @@ const Top = () => {
         <Paper className={classes.root}>
           <InputBase
             className={classes.input}
-            // placeholder="Watson Discovery で検索"
-            placeholder="Watson Discovery で検索（空白区切りで複数ワード検索）"
+            placeholder="Watson Discovery で検索"
+            // placeholder="Watson Discovery で検索（空白区切りで複数ワード検索）"
             inputProps={{ "aria-label": "search watson discovery" }}
             onChange={(e) => {
               setSendText(e.target.value);
